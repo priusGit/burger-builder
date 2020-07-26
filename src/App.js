@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
+import Layout from './components/Layout/Layout';
 
 function App() {
   return (
-    <div></div>
+    <div><Layout><p>Test</p></Layout></div>
   );
 }
 
