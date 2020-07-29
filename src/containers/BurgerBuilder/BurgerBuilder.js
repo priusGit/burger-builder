@@ -70,6 +70,12 @@ class BurderBuilder extends Component {
         this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
         this.updatePurchaseState(updatedIngredients);
     }
+    purchaseCancelHandler = () => {
+        this.setState({ purchasing: false });
+    }
+    purchaseContinuedHandler = () => {
+        alert('you continue');
+    }
     render() {
         const disabledInfo = {
             ...this.state.ingredients
@@ -79,7 +85,11 @@ class BurderBuilder extends Component {
         }
         return (
             <Aux>
-                <Modal show={this.state.purchasing}><OrderSummary ingredients={this.state.ingredients} /></Modal>
+                <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+                    <OrderSummary ingredients={this.state.ingredients}
+                        purchaseCanceled={this.purchaseCancelHandler}
+                        purchaseContinued={this.purchaseContinuedHandler}
+                    /></Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls
                     price={this.state.totalPrice}
