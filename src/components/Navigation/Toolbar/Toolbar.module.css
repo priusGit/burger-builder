@@ -16,3 +16,15 @@
 .Toolbar nav{
     height:100%;
 }
+.Logo{
+    height: 80%;
+}
+
+.PcOnly{
+    opacity: 0;
+}
+@media (min-width:500px){
+    .PcOnly{
+      opacity:1;
+    }
+}
