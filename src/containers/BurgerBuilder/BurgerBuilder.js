@@ -4,27 +4,20 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
-import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/witherrorHandler';
-import * as actionTypes from '../../store/actions'
+import * as burgerBuilderActions from '../../store/actions/index';
 import { connect } from 'react-redux';
-
+import axios from '../../axios-orders';
 
 class BurderBuilder extends Component {
 
     state = {
         purchasable: false,
-        purchasing: false,
-        loading: false,
-        error: false
+        purchasing: false
     }
     componentDidMount() {
-        // axios.get('https://burger-builder-2137.firebaseio.com/ingredients.json')
-        //     .then(response => {
-        //         this.setState({ ingredients: response.data });
-        //     })
-        //     .catch(error => { this.setState({ error: true }) });
+        this.props.onInitIngredients();
     }
     updatePurchaseState(ingredients) {
         const sum = Object.keys(ingredients).map(igKey => {
@@ -74,7 +67,7 @@ class BurderBuilder extends Component {
             />;
         }
         if (this.state.loading) {
-            orderSummary = this.state.error ? <p>Ingredients can't be loaded, sorry!</p> : <Spinner />;
+            orderSummary = this.props.error ? <p>Ingredients can't be loaded, sorry!</p> : burger;
         }
 
         return (
@@ -92,14 +85,16 @@ class BurderBuilder extends Component {
 const mapStateToProps = state => {
     return {
         ings: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        error: state.error
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onIngredientAdded: (ingName) => dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
-        onIngredientRemoved: (ingName) => dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName })
+        onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
+        onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
+        onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurderBuilder, axios));
