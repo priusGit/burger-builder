@@ -6,10 +6,11 @@ export const authStart = () => {
         type: actionTypes.AUTH_START
     };
 }
-export const authSuccess = (authData) => {
+export const authSuccess = (idToken, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData: authData
+        idToken: idToken,
+        userId: userId
     };
 }
 export const authFail = (error) => {
@@ -37,8 +38,7 @@ export const auth = (email, password, isSignUp) => {
                 dispatch(authSuccess(response.data));
             })
             .catch(err => {
-                console.log(err);
-                dispatch(authFail());
+                dispatch(authFail(err.response.data.error));
             })
     }
 }
