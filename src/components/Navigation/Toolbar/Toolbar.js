@@ -7,7 +7,7 @@ const toolbar = (props) => (
     <header className={classes.Toolbar}>
         <DrawerToggle clicked={props.drawerToggleClicked} />
         <div className={classes.Logo}> <Logo /></div>
-        <nav className={classes.PcOnly}><NavigationItems /></nav>
+        <nav className={classes.PcOnly}><NavigationItems isAuthenticated={props.isAuth} /></nav>
     </header>
 );
 export default toolbar;
